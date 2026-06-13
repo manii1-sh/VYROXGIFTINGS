@@ -88,7 +88,7 @@ function Index() {
               <div className="mt-6 hidden gap-3 sm:flex"><Button className="h-12 px-7">Shop Now</Button><Button className="h-12 px-7" variant="outline">View Collection</Button></div>
             </div>
 
-            <img src={heroModels} alt="Female and male VYROX models in crimson tailoring" width={1024} height={1536} className="absolute bottom-0 left-1/2 z-30 h-[82vh] w-auto max-w-none object-contain drop-shadow-hero sm:h-[92vh]" style={{ transform: `translateX(-50%) translateY(${progress * 12}px) scale(${0.94 + progress * 0.06})` }} />
+            <img src={heroModels} alt="Female and male VYROX models in crimson tailoring" width={1024} height={1536} className="absolute bottom-0 left-1/2 z-30 h-auto w-[96vw] max-w-none object-contain drop-shadow-hero sm:h-[92vh] sm:w-auto" style={{ transform: `translateX(-50%) translateY(${progress * 12}px) scale(${0.94 + progress * 0.06})` }} />
 
             <div className="absolute bottom-[15%] right-[5vw] z-40 hidden w-44 border border-border bg-panel/90 p-3 backdrop-blur md:block" style={{ opacity: details, transform: `translateY(${(1 - details) * 50}px)` }}>
               <p className="font-display text-lg font-black uppercase text-primary">New Drop</p><p className="font-display text-lg font-bold uppercase">Limited Edition</p><div className="mt-3 h-20 bg-primary/10"><Box className="mx-auto h-full w-10 text-primary" /></div>
