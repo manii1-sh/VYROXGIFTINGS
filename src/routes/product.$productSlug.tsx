@@ -24,7 +24,7 @@ function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [showChart, setShowChart] = useState(false);
   const [error, setError] = useState(false);
-  const dragStart = useRef<number>();
+  const dragStart = useRef<number | undefined>(undefined);
   const move = (direction: number) => setFrame((current) => (current + direction + 5) % 5);
   const addSelected = () => { if (!size) { setError(true); return false; } add({ slug: product.slug, size, quantity }); setError(false); return true; };
 
