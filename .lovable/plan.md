@@ -1,25 +1,33 @@
-# Implementation plan
+# VYROX product and collection expansion
 
-## Visual direction
-- Match the supplied black, red, and white VYROX fashion reference closely.
-- Use the exact visible headings, labels, navigation, product names, prices, benefits, and testimonial copy from the reference.
-- Treat the uploaded compositions as design references and create real layered page content rather than embedding the screenshot.
+## Product detail pages
+- Make every Best Seller card open a dedicated route such as `/product/discipline-oversized-tee`.
+- Build a premium shopping layout matching the current black/red VYROX visual system: media viewer on the left, product information and purchase controls on the right.
+- Include product name, price, rating, short description, fabric/fit details, delivery/returns highlights, quantity selector, and related products.
 
-## Parallax opening sequence
-- Build a tall scroll scene with a sticky full-screen hero.
-- Initial frame: only the male and female models are visible in the central framed viewport.
-- During scroll, reveal the large `VYROX` graphic and `NOT JUST A T-SHIRT. IT’S A STATEMENT.` behind the models.
-- Then reveal the supporting line, CTAs, navigation, limited-edition product inset, and trust benefits in stages.
-- Move background, text, models, and foreground details at different speeds so the models remain clearly in front.
-- End in the complete hero composition, then smoothly release into the normal page.
+## Interactive 360° preview
+- Create consistent multi-angle product imagery for each T-shirt: front, front-quarter, side, back-quarter, and back.
+- Add a drag/swipe-controlled viewer that cycles smoothly through those angles, with arrow controls, thumbnails, an angle indicator, and mobile touch support.
+- Keep a standard image gallery fallback and respect reduced-motion preferences.
 
-## Remaining landing page
-- Build Best Sellers, Collections, Wear VYROX campaign, service benefits, testimonials, and newsletter sections in the same composition and order as the reference.
-- Use original generated fashion/product imagery that closely matches the reference’s styling.
-- Add polished category, carousel, CTA, and hover interactions without adding backend commerce behavior.
+## Size and purchase controls
+- Add selectable sizes `S`, `M`, `L`, `XL`, and `XXL`, with a clear selected state and validation before purchase.
+- Add a size-chart modal with chest, length, shoulder, and recommended-fit measurements.
+- Add quantity controls, `Add to Cart`, and `Buy Now` actions.
+- Build a frontend cart drawer with line items, selected size, quantity changes, subtotal, removal, and an empty state. `Buy Now` will open the same checkout-ready cart state.
+- Because Shopify setup was skipped, checkout will remain a polished frontend demo rather than processing real orders; it can be connected later without redesigning these pages.
 
-## Quality
-- Centralize the black/red/white palette, condensed display typography, borders, shadows, glow, smoke, and motion values in the design system.
-- Adapt the choreography for mobile while preserving the same model-first reveal story.
-- Provide a reduced-motion version, keyboard focus states, accessible image descriptions, VYROX metadata, sitemap, and robots file.
-- Verify the initial state, full reveal order, behind-model layering, smooth section transition, responsive layouts, and runtime behavior.
+## Collection pages
+- Make each `Explore Our Collections` card open its own route:
+  - `/collections/oversized-tees`
+  - `/collections/premium-tees`
+  - `/collections/accessories`
+  - `/collections/gift-box`
+- Add collection hero imagery, category description, product counts, sorting, lightweight filters, and responsive product grids.
+- Link collection products back to their product detail pages and preserve the shared VYROX navigation/footer.
+
+## Shared structure and verification
+- Centralize catalog, sizes, pricing, imagery, and collection membership so cards and detail pages stay consistent.
+- Reuse the existing semantic design tokens and Button component; add only product-viewer, modal, cart, and collection-specific presentation styles.
+- Add unique title, description, and social metadata for each product and collection route.
+- Verify card navigation, mouse drag, touch swipe, size validation, size chart, cart updates, responsive layouts, keyboard focus, and direct-route loading.
