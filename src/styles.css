@@ -166,12 +166,6 @@
   .bg-campaign { background: linear-gradient(90deg, var(--color-background) 0%, color-mix(in oklab, var(--color-background) 92%, transparent) 28%, color-mix(in oklab, var(--color-background) 15%, transparent) 68%); }
   .bg-newsletter { background: linear-gradient(90deg, color-mix(in oklab, var(--color-background) 5%, transparent), var(--color-background) 72%); }
   .drop-shadow-hero { filter: drop-shadow(0 30px 35px oklch(0 0 0 / .65)); }
-  .animate-slide-in-right { animation: slide-in-right 260ms ease-out both; }
-}
-
-@keyframes slide-in-right {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
 }
 
 @media (max-width: 639px) {

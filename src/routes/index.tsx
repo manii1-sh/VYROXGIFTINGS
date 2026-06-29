@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Box, Headphones, RefreshCw, Search, ShieldCheck, ShoppingBag, Truck } from "lucide-react";
 import { Button } from "../components/ui/button";
@@ -7,7 +7,6 @@ import productsImage from "../assets/vyrox-products.jpg";
 import collectionsImage from "../assets/vyrox-collections.jpg";
 import campaignImage from "../assets/vyrox-campaign.jpg";
 import newsletterImage from "../assets/vyrox-newsletter.jpg";
-import { collections as collectionCatalog, products as productCatalog } from "../lib/catalog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -108,13 +107,13 @@ function Index() {
       <section id="best" className="section-shell border-b border-border py-20">
         <div className="mb-9 flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><p className="section-kicker">Trending Now</p><h2 className="section-title">Best Sellers</h2></div><div className="flex gap-7 text-[10px] font-bold uppercase tracking-widest"><span className="text-primary">All</span><span>T-Shirts</span><span>Accessories</span><span>Combos</span></div></div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map(([name, price], index) => <Link key={name} to="/product/$productSlug" params={{ productSlug: productCatalog[index].slug }} className="group overflow-hidden border border-border bg-card"><div className="aspect-[4/5] overflow-hidden"><img src={productsImage} alt={`${name} product`} loading="lazy" width={1536} height={864} className="h-full w-[400%] max-w-none object-cover transition-transform duration-500 group-hover:scale-[1.03]" style={{ transform: `translateX(-${index * 25}%)` }}/></div><div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t border-border p-4"><div className="min-w-0"><h3 className="truncate text-xs">{name}</h3><p className="mt-1 text-xs">{price}</p></div><ShoppingBag className="size-4 shrink-0"/></div></Link>)}
+          {products.map(([name, price], index) => <article key={name} className="group overflow-hidden border border-border bg-card"><div className="aspect-[4/5] overflow-hidden"><img src={productsImage} alt={`${name} product`} loading="lazy" width={1536} height={864} className="h-full w-[400%] max-w-none object-cover transition-transform duration-500 group-hover:scale-[1.03]" style={{ transform: `translateX(-${index * 25}%)` }}/></div><div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t border-border p-4"><div className="min-w-0"><h3 className="truncate text-xs">{name}</h3><p className="mt-1 text-xs">{price}</p></div><ShoppingBag className="size-4 shrink-0"/></div></article>)}
         </div>
       </section>
 
       <section id="collections" className="section-shell border-b border-border py-20">
         <div className="mb-8 flex items-center justify-between"><h2 className="section-title">Explore Our <span className="text-primary">Collections</span></h2><div className="flex gap-2"><Button variant="outline" size="icon"><ArrowLeft className="size-4"/></Button><Button variant="outline" size="icon"><ArrowRight className="size-4"/></Button></div></div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{collections.map((name, index) => <Link key={name} to="/collections/$collectionSlug" params={{ collectionSlug: collectionCatalog[index].slug }} className="group relative aspect-[4/5] overflow-hidden border border-border"><img src={collectionsImage} alt={name} loading="lazy" width={1536} height={864} className="h-full w-[400%] max-w-none object-cover transition-transform duration-500 group-hover:scale-[1.04]" style={{ transform: `translateX(-${index * 25}%)` }}/><div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/80 to-transparent p-5 pt-20"><h3 className="font-display text-xl font-bold">{name}</h3><p className="mt-3 text-[9px] font-bold text-primary">SHOP NOW →</p></div></Link>)}</div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{collections.map((name, index) => <article key={name} className="group relative aspect-[4/5] overflow-hidden border border-border"><img src={collectionsImage} alt={name} loading="lazy" width={1536} height={864} className="h-full w-[400%] max-w-none object-cover transition-transform duration-500 group-hover:scale-[1.04]" style={{ transform: `translateX(-${index * 25}%)` }}/><div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/80 to-transparent p-5 pt-20"><h3 className="font-display text-xl font-bold">{name}</h3><p className="mt-3 text-[9px] font-bold text-primary">SHOP NOW →</p></div></article>)}</div>
       </section>
 
       <section className="relative min-h-[680px] overflow-hidden border-b border-border"><img src={campaignImage} alt="VYROX attitude streetwear campaign" loading="lazy" width={1536} height={864} className="absolute inset-0 h-full w-full object-cover"/><div className="absolute inset-0 bg-campaign"/><div className="section-shell relative z-10 flex min-h-[680px] items-center"><div className="max-w-md"><h2 className="section-title text-5xl sm:text-7xl">Wear <span className="text-primary">VYROX.</span><br/>Own the attitude.</h2><p className="mt-5 text-sm text-muted-foreground">Fashion that speaks before you do.</p><Button variant="outline" className="mt-7 h-12 px-7">Explore Now</Button></div></div></section>

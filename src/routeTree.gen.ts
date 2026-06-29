@@ -11,8 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProductProductSlugRouteImport } from './routes/product.$productSlug'
-import { Route as CollectionsCollectionSlugRouteImport } from './routes/collections.$collectionSlug'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -24,63 +22,31 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProductProductSlugRoute = ProductProductSlugRouteImport.update({
-  id: '/product/$productSlug',
-  path: '/product/$productSlug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CollectionsCollectionSlugRoute =
-  CollectionsCollectionSlugRouteImport.update({
-    id: '/collections/$collectionSlug',
-    path: '/collections/$collectionSlug',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/collections/$collectionSlug': typeof CollectionsCollectionSlugRoute
-  '/product/$productSlug': typeof ProductProductSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/collections/$collectionSlug': typeof CollectionsCollectionSlugRoute
-  '/product/$productSlug': typeof ProductProductSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/collections/$collectionSlug': typeof CollectionsCollectionSlugRoute
-  '/product/$productSlug': typeof ProductProductSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/sitemap.xml'
-    | '/collections/$collectionSlug'
-    | '/product/$productSlug'
+  fullPaths: '/' | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/sitemap.xml'
-    | '/collections/$collectionSlug'
-    | '/product/$productSlug'
-  id:
-    | '__root__'
-    | '/'
-    | '/sitemap.xml'
-    | '/collections/$collectionSlug'
-    | '/product/$productSlug'
+  to: '/' | '/sitemap.xml'
+  id: '__root__' | '/' | '/sitemap.xml'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  CollectionsCollectionSlugRoute: typeof CollectionsCollectionSlugRoute
-  ProductProductSlugRoute: typeof ProductProductSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,28 +65,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/product/$productSlug': {
-      id: '/product/$productSlug'
-      path: '/product/$productSlug'
-      fullPath: '/product/$productSlug'
-      preLoaderRoute: typeof ProductProductSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/collections/$collectionSlug': {
-      id: '/collections/$collectionSlug'
-      path: '/collections/$collectionSlug'
-      fullPath: '/collections/$collectionSlug'
-      preLoaderRoute: typeof CollectionsCollectionSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  CollectionsCollectionSlugRoute: CollectionsCollectionSlugRoute,
-  ProductProductSlugRoute: ProductProductSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
