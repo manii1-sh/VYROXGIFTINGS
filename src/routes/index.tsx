@@ -62,7 +62,7 @@ function Index() {
       <section ref={sceneRef} className="relative h-[220vh] md:h-[300vh]" aria-label="VYROX campaign introduction">
         <div className="sticky top-0 h-dvh overflow-hidden border-b border-border bg-hero">
           <div className="hero-grid absolute inset-0 opacity-30" />
-          <nav className="absolute inset-x-0 top-0 z-50 mx-auto hidden max-w-[1500px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-5 md:grid sm:flex sm:justify-between sm:px-9">
+          <nav className="absolute inset-x-0 top-0 z-50 mx-auto hidden max-w-[1500px] items-center justify-between gap-4 px-9 py-5 md:flex">
             <a href="#top" className="min-w-0 font-logo text-2xl tracking-[0.35em] text-primary sm:text-3xl">VYROX<span className="text-foreground">╱</span></a>
             <div className="hidden items-center gap-7 text-[10px] font-semibold uppercase tracking-widest lg:flex">
               <a className="text-primary" href="#top">Home</a><a href="#best">Shop</a><a href="#best">Oversized Tees</a><a href="#collections">Collections</a><a href="#join">Gift Box</a><a href="#join">Track Order</a><a href="#join">Contact</a>
