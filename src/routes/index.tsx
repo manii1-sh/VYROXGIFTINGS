@@ -1,9 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Box, Headphones, RefreshCw, Search, ShieldCheck, ShoppingBag, Truck } from "lucide-react";
 import { Button } from "../components/ui/button";
+import { MobileChrome } from "../components/mobile-shell";
+import { useCart } from "../lib/cart";
+import { PRODUCTS, PRODUCT_IMAGE } from "../lib/products";
 import heroModels from "../assets/vyrox-hero-models-v2.png";
-import productsImage from "../assets/vyrox-products.jpg";
 import collectionsImage from "../assets/vyrox-collections.jpg";
 import campaignImage from "../assets/vyrox-campaign.jpg";
 import newsletterImage from "../assets/vyrox-newsletter.jpg";
@@ -19,13 +21,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
-
-const products = [
-  ["Discipline Oversized Tee", "₹899"],
-  ["Fearless Oversized Tee", "₹899"],
-  ["Born To Stand Out Tee", "₹799"],
-  ["VYROX Signature Tee", "₹699"],
-] as const;
 
 const collections = ["OVERSIZED TEES", "PREMIUM TEES", "ACCESSORIES", "GIFT BOX"];
 
