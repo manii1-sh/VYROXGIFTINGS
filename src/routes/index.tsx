@@ -124,3 +124,16 @@ function Index() {
     </main>
   );
 }
+
+function DesktopCartButton() {
+  const { count } = useCart();
+  return (
+    <Link to="/checkout" aria-label="Shopping bag" className="relative inline-grid size-9 place-items-center text-foreground hover:text-primary">
+      <ShoppingBag className="size-4" />
+      {count > 0 && (
+        <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 font-display text-[10px] font-bold text-primary-foreground">{count}</span>
+      )}
+    </Link>
+  );
+}
+
