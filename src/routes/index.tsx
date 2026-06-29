@@ -1,9 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, Box, Headphones, RefreshCw, Search, ShieldCheck, ShoppingBag, Truck } from "lucide-react";
 import { Button } from "../components/ui/button";
+import { MobileChrome } from "../components/mobile-shell";
+import { useCart } from "../lib/cart";
+import { PRODUCTS, PRODUCT_IMAGE } from "../lib/products";
 import heroModels from "../assets/vyrox-hero-models-v2.png";
-import productsImage from "../assets/vyrox-products.jpg";
 import collectionsImage from "../assets/vyrox-collections.jpg";
 import campaignImage from "../assets/vyrox-campaign.jpg";
 import newsletterImage from "../assets/vyrox-newsletter.jpg";
@@ -19,13 +21,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
-
-const products = [
-  ["Discipline Oversized Tee", "₹899"],
-  ["Fearless Oversized Tee", "₹899"],
-  ["Born To Stand Out Tee", "₹799"],
-  ["VYROX Signature Tee", "₹699"],
-] as const;
 
 const collections = ["OVERSIZED TEES", "PREMIUM TEES", "ACCESSORIES", "GIFT BOX"];
 
@@ -63,20 +58,22 @@ function Index() {
 
   return (
     <main className="overflow-clip bg-background text-foreground">
-      <section ref={sceneRef} className="relative h-[300vh]" aria-label="VYROX campaign introduction">
+      <MobileChrome />
+      <section ref={sceneRef} className="relative h-[220vh] md:h-[300vh]" aria-label="VYROX campaign introduction">
         <div className="sticky top-0 h-dvh overflow-hidden border-b border-border bg-hero">
           <div className="hero-grid absolute inset-0 opacity-30" />
-          <nav className="absolute inset-x-0 top-0 z-50 mx-auto grid max-w-[1500px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-5 sm:flex sm:justify-between sm:px-9">
+          <nav className="absolute inset-x-0 top-0 z-50 mx-auto hidden max-w-[1500px] items-center justify-between gap-4 px-9 py-5 md:flex">
             <a href="#top" className="min-w-0 font-logo text-2xl tracking-[0.35em] text-primary sm:text-3xl">VYROX<span className="text-foreground">╱</span></a>
             <div className="hidden items-center gap-7 text-[10px] font-semibold uppercase tracking-widest lg:flex">
               <a className="text-primary" href="#top">Home</a><a href="#best">Shop</a><a href="#best">Oversized Tees</a><a href="#collections">Collections</a><a href="#join">Gift Box</a><a href="#join">Track Order</a><a href="#join">Contact</a>
             </div>
             <div className="flex shrink-0 items-center gap-2 sm:gap-3">
               <Button variant="ghost" size="icon" aria-label="Search"><Search className="size-4" /></Button>
-              <Button variant="ghost" size="icon" aria-label="Shopping bag"><ShoppingBag className="size-4" /></Button>
+              <DesktopCartButton />
               <Button className="hidden sm:inline-flex">Shop Now</Button>
             </div>
           </nav>
+
 
           <div className="absolute inset-0 flex items-center justify-center pt-12">
             <div className="absolute inset-x-[4vw] top-[18%] z-10 text-center font-display text-[24vw] font-black leading-none tracking-[-0.08em] text-transparent hero-outline sm:top-[12%] sm:text-[17vw]" style={{ opacity: words, transform: `translateY(${(1 - words) * 70}px) scale(${0.82 + words * 0.18})` }}>VYROX</div>
@@ -107,7 +104,7 @@ function Index() {
       <section id="best" className="section-shell border-b border-border py-20">
         <div className="mb-9 flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><p className="section-kicker">Trending Now</p><h2 className="section-title">Best Sellers</h2></div><div className="flex gap-7 text-[10px] font-bold uppercase tracking-widest"><span className="text-primary">All</span><span>T-Shirts</span><span>Accessories</span><span>Combos</span></div></div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map(([name, price], index) => <article key={name} className="group overflow-hidden border border-border bg-card"><div className="aspect-[4/5] overflow-hidden"><img src={productsImage} alt={`${name} product`} loading="lazy" width={1536} height={864} className="h-full w-[400%] max-w-none object-cover transition-transform duration-500 group-hover:scale-[1.03]" style={{ transform: `translateX(-${index * 25}%)` }}/></div><div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t border-border p-4"><div className="min-w-0"><h3 className="truncate text-xs">{name}</h3><p className="mt-1 text-xs">{price}</p></div><ShoppingBag className="size-4 shrink-0"/></div></article>)}
+          {PRODUCTS.map((p) => <Link key={p.slug} to="/product/$slug" params={{ slug: p.slug }} className="group block overflow-hidden border border-border bg-card"><div className="aspect-[4/5] overflow-hidden"><img src={PRODUCT_IMAGE} alt={`${p.name} product`} loading="lazy" width={1536} height={864} className="h-full w-[400%] max-w-none object-cover transition-transform duration-500 group-hover:scale-[1.03]" style={{ transform: `translateX(-${p.imageIndex * 25}%)` }}/></div><div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t border-border p-4"><div className="min-w-0"><h3 className="truncate text-xs">{p.name}</h3><p className="mt-1 text-xs">{p.price}</p></div><ShoppingBag className="size-4 shrink-0"/></div></Link>)}
         </div>
       </section>
 
@@ -127,3 +124,16 @@ function Index() {
     </main>
   );
 }
+
+function DesktopCartButton() {
+  const { count } = useCart();
+  return (
+    <Link to="/checkout" aria-label="Shopping bag" className="relative inline-grid size-9 place-items-center text-foreground hover:text-primary">
+      <ShoppingBag className="size-4" />
+      {count > 0 && (
+        <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 font-display text-[10px] font-bold text-primary-foreground">{count}</span>
+      )}
+    </Link>
+  );
+}
+
