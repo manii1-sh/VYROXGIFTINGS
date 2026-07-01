@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Gift, Headphones, Heart, PackageCheck, RefreshCw, Search, ShieldCheck, ShoppingBag, Sparkles, Truck } from "lucide-react";
-import { Button } from "../components/ui/button";
+import { Button, buttonVariants } from "../components/ui/button";
 import { MobileChrome } from "../components/mobile-shell";
 import { useCart } from "../lib/cart";
 import { PRODUCTS, PRODUCT_IMAGE } from "../lib/products";
@@ -87,7 +87,7 @@ function Index() {
             <div className="flex shrink-0 items-center gap-2 sm:gap-3">
               <Button variant="ghost" size="icon" aria-label="Search"><Search className="size-4" /></Button>
               <DesktopCartButton />
-              <Button asChild className="hidden sm:inline-flex"><Link to="/hampers">Shop Hampers</Link></Button>
+              <Link to="/hampers" className={`${buttonVariants()} hidden h-10 px-4 sm:inline-flex`}>Shop Hampers</Link>
             </div>
           </nav>
 
@@ -114,8 +114,8 @@ function Index() {
                 Premium gift hampers, hand-packed with roses, perfume, chocolates & VYROX apparel — for the ones who matter most.
               </p>
               <div className="mt-6 hidden gap-3 sm:flex">
-                <Button asChild className="h-12 px-7"><Link to="/hampers">Shop Hampers</Link></Button>
-                <Button asChild className="h-12 px-7" variant="outline"><a href="#occasions">By Occasion</a></Button>
+                <Link to="/hampers" className={`${buttonVariants()} h-12 px-7`}>Shop Hampers</Link>
+                <a href="#occasions" className={`${buttonVariants({ variant: "outline" })} h-12 px-7`}>By Occasion</a>
               </div>
             </div>
 

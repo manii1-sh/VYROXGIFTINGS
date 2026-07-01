@@ -109,7 +109,7 @@ function HamperPage() {
                 <h2 className="font-display text-sm font-bold uppercase tracking-widest">What's inside the box</h2>
               </div>
               <ul className="grid gap-2 sm:grid-cols-2">
-                {hamper.contents.map((c) => (
+                {hamper.contents.map((c: string) => (
                   <li key={c} className="flex items-start gap-2 text-xs">
                     <Check className="mt-0.5 size-4 shrink-0 text-primary" />
                     <span>{c}</span>
@@ -240,7 +240,7 @@ function HamperPage() {
               <AccordionItem value="inside">
                 <AccordionTrigger className="font-display uppercase">Full contents</AccordionTrigger>
                 <AccordionContent className="text-sm text-muted-foreground">
-                  <ul className="list-disc space-y-1 pl-5">{hamper.contents.map((c) => <li key={c}>{c}</li>)}</ul>
+                  <ul className="list-disc space-y-1 pl-5">{hamper.contents.map((c: string) => <li key={c}>{c}</li>)}</ul>
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="ship">
