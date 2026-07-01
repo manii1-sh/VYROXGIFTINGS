@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Heart, Home, LayoutGrid, Menu, Search, ShoppingBag, Store, User, X } from "lucide-react";
+import { Gift, Heart, Home, Menu, Search, ShoppingBag, Sparkles, User, X } from "lucide-react";
 import { useCart } from "../lib/cart";
 
 const MENU = [
   ["Home", "/"],
-  ["Shop", "/#best"],
-  ["Oversized Tees", "/#best"],
-  ["Collections", "/#collections"],
-  ["Gift Box", "/#join"],
+  ["Hampers", "/hampers"],
+  ["Occasions", "/#occasions"],
+  ["How it works", "/#how"],
+  ["Wardrobe", "/#wardrobe"],
   ["Track Order", "/#join"],
   ["Contact", "/#join"],
 ] as const;
@@ -69,9 +69,9 @@ export function MobileHeader() {
 }
 
 const TABS = [
-  { label: "Home", icon: Home, href: "/" as const },
-  { label: "Shop", icon: Store, href: "/#best" },
-  { label: "Drops", icon: LayoutGrid, href: "/#collections" },
+  { label: "Home", icon: Home, href: "/" },
+  { label: "Hampers", icon: Gift, href: "/hampers" },
+  { label: "Occasions", icon: Sparkles, href: "/#occasions" },
   { label: "Wishlist", icon: Heart, href: "/#join" },
   { label: "Account", icon: User, href: "/#join" },
 ];

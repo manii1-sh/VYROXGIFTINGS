@@ -10,13 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as HampersRouteImport } from './routes/hampers'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
+import { Route as HamperSlugRouteImport } from './routes/hamper.$slug'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HampersRoute = HampersRouteImport.update({
+  id: '/hampers',
+  path: '/hampers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -34,38 +41,70 @@ const ProductSlugRoute = ProductSlugRouteImport.update({
   path: '/product/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HamperSlugRoute = HamperSlugRouteImport.update({
+  id: '/hamper/$slug',
+  path: '/hamper/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
+  '/hampers': typeof HampersRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/hamper/$slug': typeof HamperSlugRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
+  '/hampers': typeof HampersRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/hamper/$slug': typeof HamperSlugRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/checkout': typeof CheckoutRoute
+  '/hampers': typeof HampersRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/hamper/$slug': typeof HamperSlugRoute
   '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/checkout' | '/sitemap.xml' | '/product/$slug'
+  fullPaths:
+    | '/'
+    | '/checkout'
+    | '/hampers'
+    | '/sitemap.xml'
+    | '/hamper/$slug'
+    | '/product/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/checkout' | '/sitemap.xml' | '/product/$slug'
-  id: '__root__' | '/' | '/checkout' | '/sitemap.xml' | '/product/$slug'
+  to:
+    | '/'
+    | '/checkout'
+    | '/hampers'
+    | '/sitemap.xml'
+    | '/hamper/$slug'
+    | '/product/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/checkout'
+    | '/hampers'
+    | '/sitemap.xml'
+    | '/hamper/$slug'
+    | '/product/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CheckoutRoute: typeof CheckoutRoute
+  HampersRoute: typeof HampersRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  HamperSlugRoute: typeof HamperSlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
 }
 
@@ -76,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hampers': {
+      id: '/hampers'
+      path: '/hampers'
+      fullPath: '/hampers'
+      preLoaderRoute: typeof HampersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -99,25 +145,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/hamper/$slug': {
+      id: '/hamper/$slug'
+      path: '/hamper/$slug'
+      fullPath: '/hamper/$slug'
+      preLoaderRoute: typeof HamperSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CheckoutRoute: CheckoutRoute,
+  HampersRoute: HampersRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  HamperSlugRoute: HamperSlugRoute,
   ProductSlugRoute: ProductSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
