@@ -14,6 +14,7 @@ type CartCtx = {
   subtotal: number;
   add: (item: CartItem) => void;
   remove: (slug: string, size: string) => void;
+  updateQty: (slug: string, size: string, qty: number) => void;
   clear: () => void;
 };
 
@@ -53,6 +54,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }),
       remove: (slug, size) =>
         setItems((prev) => prev.filter((p) => !(p.slug === slug && p.size === size))),
+      updateQty: (slug, size, qty) =>
+        setItems((prev) => {
+          if (qty <= 0) return prev.filter((p) => !(p.slug === slug && p.size === size));
+          return prev.map((p) =>
+            p.slug === slug && p.size === size ? { ...p, qty } : p
+          );
+        }),
       clear: () => setItems([]),
     }),
     [items],

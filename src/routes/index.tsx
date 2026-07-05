@@ -1,12 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Gift, Headphones, Heart, PackageCheck, RefreshCw, Search, ShieldCheck, ShoppingBag, Sparkles, Truck } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Gift, Heart, Instagram, PackageCheck, Search, ShieldCheck, ShoppingBag, Sparkles, Truck } from "lucide-react";
 import { Button, buttonVariants } from "../components/ui/button";
 import { MobileChrome } from "../components/mobile-shell";
 import { useCart } from "../lib/cart";
-import { PRODUCTS, PRODUCT_IMAGE } from "../lib/products";
+import { PRODUCTS } from "../lib/products";
 import { HAMPERS } from "../lib/hampers";
 import hamperHero from "../assets/vyrox-hamper-hero.png";
+import useEmblaCarousel from "embla-carousel-react";
+import { OrganizationSchema } from "../components/seo-schema";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,16 +26,13 @@ const occasions = [
   { name: "Valentine", icon: Heart },
   { name: "Anniversary", icon: Sparkles },
   { name: "Birthday", icon: Gift },
-  { name: "Rakhi", icon: Heart },
   { name: "Wedding", icon: Sparkles },
-  { name: "Corporate", icon: PackageCheck },
 ];
 
 const benefits = [
   [Truck, "FREE SHIPPING", "On Orders Above ₹999"],
   [PackageCheck, "HAND-PACKED", "Ready in 24 Hours"],
   [ShieldCheck, "PREMIUM CURATED", "Only the Best Inside"],
-  [Headphones, "GIFT SUPPORT", "We're Here to Help"],
 ] as const;
 
 const steps = [
@@ -41,6 +40,89 @@ const steps = [
   ["02", "Personalize", "Add the recipient's name, a gift message and your delivery date."],
   ["03", "We Deliver", "We hand-pack, gift-wrap and ship it straight to their door."],
 ];
+
+function WardrobeCarousel() {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ 
+    loop: true,
+    align: "start",
+    slidesToScroll: 1,
+  });
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(true);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+
+    const onSelect = () => {
+      setCanScrollPrev(emblaApi.canScrollPrev());
+      setCanScrollNext(emblaApi.canScrollNext());
+    };
+
+    emblaApi.on("select", onSelect);
+    onSelect();
+
+    return () => {
+      emblaApi.off("select", onSelect);
+    };
+  }, [emblaApi]);
+
+  const scrollPrev = () => emblaApi?.scrollPrev();
+  const scrollNext = () => emblaApi?.scrollNext();
+
+  return (
+    <div className="relative">
+      {/* Left Arrow */}
+      <button
+        onClick={scrollPrev}
+        disabled={!canScrollPrev}
+        className="absolute left-0 top-1/2 z-10 -translate-y-1/2 grid size-10 place-items-center rounded-full border border-border bg-background/95 shadow-lg transition hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:hover:bg-background"
+        aria-label="Previous products"
+      >
+        <ChevronLeft className="size-5" />
+      </button>
+
+      {/* Right Arrow */}
+      <button
+        onClick={scrollNext}
+        disabled={!canScrollNext}
+        className="absolute right-0 top-1/2 z-10 -translate-y-1/2 grid size-10 place-items-center rounded-full border border-border bg-background/95 shadow-lg transition hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:hover:bg-background"
+        aria-label="Next products"
+      >
+        <ChevronRight className="size-5" />
+      </button>
+
+      {/* Carousel Container */}
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex gap-3">
+          {PRODUCTS.map((p) => (
+            <Link
+              key={p.slug}
+              to="/product/$slug"
+              params={{ slug: p.slug }}
+              className="group block min-w-0 shrink-0 overflow-hidden border border-border bg-card basis-[calc(50%-0.375rem)] sm:basis-[calc(33.333%-0.5rem)] lg:basis-[calc(25%-0.5625rem)]"
+            >
+              <div className="aspect-[4/5] overflow-hidden bg-muted flex items-center justify-center">
+                <img
+                  src={p.images[0]}
+                  alt={`${p.name} product`}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+              </div>
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t border-border p-4">
+                <div className="min-w-0">
+                  <h3 className="truncate text-xs">{p.name}</h3>
+                  <p className="mt-1 text-xs">{p.price}</p>
+                </div>
+                <ShoppingBag className="size-4 shrink-0" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function Index() {
   const sceneRef = useRef<HTMLElement>(null);
@@ -70,7 +152,11 @@ function Index() {
   return (
     <main className="overflow-clip bg-background text-foreground">
       <MobileChrome />
-      <section ref={sceneRef} className="relative h-[220vh] md:h-[300vh]" aria-label="VYROX gift hamper introduction">
+      
+      {/* SEO Schema for Google */}
+      <OrganizationSchema url="https://vyrox.com" />
+      
+      <section ref={sceneRef} className="relative h-dvh md:h-[300vh]" aria-label="VYROX gift hamper introduction">
         <div className="sticky top-0 h-dvh overflow-hidden border-b border-border bg-hero-gift">
           <div className="hero-grid absolute inset-0 opacity-25" />
 
@@ -81,7 +167,7 @@ function Index() {
               <Link to="/hampers">Hampers</Link>
               <a href="#occasions">Occasions</a>
               <a href="#how">How it works</a>
-              <a href="#wardrobe">Wardrobe</a>
+              <Link to="/wardrobe">Wardrobe</Link>
               <a href="#join">Contact</a>
             </div>
             <div className="flex shrink-0 items-center gap-2 sm:gap-3">
@@ -92,36 +178,71 @@ function Index() {
           </nav>
 
           <div className="absolute inset-0 flex items-center justify-center pt-12">
-            {/* Big VYROX outline word — revealed behind the box */}
+            {/* Big VYROX outline word — desktop only */}
             <div
-              className="absolute inset-x-[4vw] top-[14%] z-10 text-center font-display text-[24vw] font-black leading-none tracking-[-0.08em] text-transparent hero-outline sm:top-[10%] sm:text-[17vw]"
-              style={{ opacity: words, transform: `translateY(${(1 - words) * 70}px) scale(${0.82 + words * 0.18})` }}
+              className="absolute right-[4vw] top-[10%] z-10 hidden text-right font-display text-[17vw] font-black leading-none tracking-[-0.08em] text-transparent hero-outline pointer-events-none sm:block"
+              style={{ opacity: words, transform: `translateX(${(1 - words) * 120}px) scale(${0.85 + words * 0.15})` }}
             >
               VYROX
             </div>
 
+            {/* ── MOBILE hero layout ── */}
+            <div className="absolute inset-0 flex flex-col sm:hidden bg-hero-gift">
+              <div className="hero-grid absolute inset-0 opacity-20" />
+
+              {/* Image — absolute, fills bottom 65% of screen, overlaps text */}
+              <img
+                src={hamperHero}
+                alt="VYROX premium gift hamper"
+                className="absolute bottom-0 left-1/2 z-0 w-[120%] max-w-none -translate-x-1/2 object-contain object-bottom drop-shadow-hero"
+                style={{ top: "25%" }}
+              />
+
+              {/* Gradient — fades image into background at bottom */}
+              <div className="absolute inset-x-0 bottom-0 z-10 h-32 bg-gradient-to-t from-background to-transparent" />
+
+              {/* TOP — text centered */}
+              <div className="relative z-20 flex flex-col items-center px-5 pt-10 text-center">
+                <p
+                  className="font-display font-black leading-none tracking-[-0.05em] select-none"
+                  style={{ fontSize: "22vw", WebkitTextStroke: "2px #b51d2a", color: "transparent" }}
+                >
+                  VYROX
+                </p>
+                <p className="font-serif-italic text-sm text-gold">Especially for you.</p>
+                <h1 className="font-display text-[11vw] font-black uppercase leading-[0.9] tracking-tight">
+                  Gift the <span className="text-primary">feeling.</span>
+                </h1>
+                <div className="mt-3 flex gap-2">
+                  <Link to="/hampers" className={`${buttonVariants()} h-9 px-5 text-[11px]`}>Shop Hampers</Link>
+                  <a href="#occasions" className={`${buttonVariants({ variant: "outline" })} h-9 px-5 text-[11px]`}>Occasions</a>
+                </div>
+              </div>
+            </div>
+
+            {/* ── DESKTOP hero layout — parallax ── */}
             {/* Left side gifting statement */}
             <div
-              className="absolute left-[5vw] top-[26%] z-20 max-w-[36rem]"
+              className="absolute left-[5vw] top-[26%] z-20 hidden max-w-[36rem] sm:block"
               style={{ opacity: words, transform: `translateX(${(1 - words) * -80}px)` }}
             >
               <p className="mb-2 font-serif-italic text-lg text-gold sm:text-2xl">Especially for you.</p>
-              <h1 className="font-display text-[14vw] font-black uppercase leading-[0.85] tracking-tight sm:text-[6.5vw] lg:text-[5.5rem]">
+              <h1 className="font-display text-[6.5vw] font-black uppercase leading-[0.85] tracking-tight lg:text-[5.5rem]">
                 Gift the<br />
                 <span className="text-primary">feeling.</span>
               </h1>
-              <p className="mt-5 hidden max-w-md text-xs font-medium leading-relaxed text-muted-foreground sm:block">
+              <p className="mt-5 max-w-md text-xs font-medium leading-relaxed text-muted-foreground">
                 Premium gift hampers, hand-packed with roses, perfume, chocolates & VYROX apparel — for the ones who matter most.
               </p>
-              <div className="mt-6 hidden gap-3 sm:flex">
+              <div className="mt-6 flex gap-3">
                 <Link to="/hampers" className={`${buttonVariants()} h-12 px-7`}>Shop Hampers</Link>
                 <a href="#occasions" className={`${buttonVariants({ variant: "outline" })} h-12 px-7`}>By Occasion</a>
               </div>
             </div>
 
-            {/* The hamper box — always visible, models retired */}
+            {/* The hamper box — desktop parallax */}
             <div
-              className="absolute inset-x-0 bottom-0 z-30 flex justify-center"
+              className="absolute inset-x-0 bottom-0 z-30 hidden justify-center sm:flex"
               style={{ transform: `translateY(${progress * 12}px) scale(${0.94 + progress * 0.06})` }}
             >
               <img
@@ -147,7 +268,7 @@ function Index() {
 
           {/* Bottom benefit strip */}
           <div className="absolute inset-x-0 bottom-0 z-40 hidden border-t border-border bg-background/75 backdrop-blur-sm lg:block" style={{ opacity: details }}>
-            <div className="mx-auto grid max-w-[1500px] grid-cols-4 gap-8 px-9 py-4">
+            <div className="mx-auto grid max-w-[1500px] grid-cols-3 gap-8 px-9 py-4">
               {benefits.map(([Icon, title, copy]) => (
                 <div key={title} className="flex items-center gap-3">
                   <Icon className="size-6 text-primary" />
@@ -156,69 +277,95 @@ function Index() {
               ))}
             </div>
           </div>
-          <div className="absolute bottom-5 left-5 z-50 font-mono text-[9px] uppercase tracking-[0.25em] text-muted-foreground lg:hidden">
-            Scroll to reveal · {Math.round(progress * 100)}%
-          </div>
+
         </div>
       </section>
 
       {/* SIGNATURE HAMPERS */}
-      <section id="hampers" className="section-shell border-b border-border py-20">
-        <div className="mb-9 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <div>
-            <p className="section-kicker">Curated Boxes</p>
-            <h2 className="section-title">Signature <span className="text-primary">Hampers</span></h2>
-            <p className="mt-3 max-w-lg font-serif-italic text-lg text-gold">Every box, packed with love.</p>
-          </div>
-          <Link to="/hampers" className="inline-flex items-center gap-2 font-display text-xs font-bold uppercase tracking-widest text-primary">
-            View all hampers <ArrowRight className="size-4" />
-          </Link>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-3">
-          {HAMPERS.map((h) => (
+      <section id="hampers" className="border-b border-border py-16">
+        <div className="section-shell">
+          {/* Header row */}
+          <div className="mb-8 flex items-end justify-between">
+            <div>
+              <p className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+                Curated Boxes
+              </p>
+              <h2 className="mt-1 font-display text-4xl font-black uppercase leading-none tracking-tight sm:text-5xl">
+                Signature <span className="text-primary">Hampers</span>
+              </h2>
+              <p className="mt-2 font-serif-italic text-base text-gold">Every box, packed with love.</p>
+            </div>
             <Link
-              key={h.slug}
-              to="/hamper/$slug"
-              params={{ slug: h.slug }}
-              className="group relative flex flex-col overflow-hidden border border-border bg-card transition-colors hover:border-gold/60"
+              to="/hampers"
+              className="hidden shrink-0 items-center gap-2 font-display text-[10px] font-bold uppercase tracking-widest text-primary hover:underline md:inline-flex"
             >
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <img
-                  src={h.image}
-                  alt={h.name}
-                  loading="lazy"
-                  width={1024}
-                  height={1280}
-                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                />
-                <span className="absolute left-3 top-3 bg-gold px-3 py-1 font-display text-[10px] font-black uppercase tracking-widest text-background">
-                  Just {h.priceLabel}
-                </span>
-              </div>
-              <div className="flex flex-1 flex-col gap-3 border-t border-border p-5">
-                <div className="flex items-baseline justify-between gap-3">
-                  <h3 className="font-display text-lg font-bold uppercase leading-tight">{h.name}</h3>
-                  <span className="shrink-0 font-serif-italic text-sm text-gold">for {h.audience}</span>
-                </div>
-                <p className="font-serif-italic text-sm text-muted-foreground">{h.tagline}</p>
-                <ul className="mt-1 flex flex-wrap gap-1.5">
-                  {h.contents.slice(0, 4).map((c) => (
-                    <li key={c} className="border border-border/70 px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">{c}</li>
-                  ))}
-                  {h.contents.length > 4 && (
-                    <li className="px-2 py-0.5 text-[10px] uppercase tracking-wider text-gold">+{h.contents.length - 4} more</li>
-                  )}
-                </ul>
-                <div className="mt-auto flex items-center justify-between pt-3">
-                  <span className="font-display text-xl font-black">{h.priceLabel}</span>
-                  <span className="inline-flex items-center gap-1 font-display text-xs font-bold uppercase tracking-widest text-primary">
-                    Shop <ArrowRight className="size-3.5" />
-                  </span>
-                </div>
-              </div>
+              View all hampers <ArrowRight className="size-3.5" />
             </Link>
-          ))}
+          </div>
+
+          {/* Grid — same pattern as /hampers page */}
+          <div className="grid grid-cols-2 gap-px bg-border lg:grid-cols-4">
+            {HAMPERS.slice(0, 4).map((h) => (
+              <Link
+                key={h.slug}
+                to="/hamper/$slug"
+                params={{ slug: h.slug }}
+                className="group relative flex flex-col bg-card"
+              >
+                {/* Image — square */}
+                <div className="relative overflow-hidden">
+                  <div className="aspect-square">
+                    <img
+                      src={h.image}
+                      alt={h.name}
+                      loading="lazy"
+                      width={600}
+                      height={600}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.06]"
+                    />
+                  </div>
+                  {/* Price badge flush left */}
+                  <span className="absolute left-0 top-3 bg-gold px-3 py-1 font-display text-[9px] font-black uppercase tracking-widest text-background">
+                    {h.priceLabel}
+                  </span>
+                  {/* Hover CTA slides up */}
+                  <div className="absolute inset-x-0 bottom-0 translate-y-full bg-primary px-4 py-2.5 transition-transform duration-300 group-hover:translate-y-0">
+                    <span className="flex items-center justify-center gap-2 font-display text-[10px] font-bold uppercase tracking-widest text-primary-foreground">
+                      View Hamper <ArrowRight className="size-3" />
+                    </span>
+                  </div>
+                </div>
+
+                {/* Card info */}
+                <div className="flex flex-1 flex-col justify-between p-3 sm:p-4">
+                  <div>
+                    <h3 className="font-display text-sm font-bold uppercase leading-snug tracking-wider sm:text-base">
+                      {h.name}
+                    </h3>
+                    <p className="mt-1 font-serif-italic text-xs text-gold line-clamp-1 sm:text-sm">
+                      {h.tagline}
+                    </p>
+                  </div>
+                  <div className="mt-3 flex items-end justify-between border-t border-border/40 pt-3">
+                    <span className="font-display text-base font-black sm:text-lg">{h.priceLabel}</span>
+                    {h.originalPrice && (
+                      <span className="text-[10px] text-muted-foreground/50 line-through">{h.originalPrice}</span>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Mobile view all */}
+          <div className="mt-5 text-center md:hidden">
+            <Link
+              to="/hampers"
+              className="inline-flex items-center gap-2 font-display text-[10px] font-bold uppercase tracking-widest text-primary"
+            >
+              View all hampers <ArrowRight className="size-3.5" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -262,7 +409,7 @@ function Index() {
         </div>
       </section>
 
-      {/* WARDROBE — clothing demoted to secondary */}
+      {/* WARDROBE — clothing carousel */}
       <section id="wardrobe" className="section-shell border-b border-border py-20">
         <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
@@ -270,77 +417,119 @@ function Index() {
             <h2 className="section-title">Shop the <span className="text-primary">Wardrobe</span></h2>
             <p className="mt-2 text-sm text-muted-foreground">The same premium quality, worn every day.</p>
           </div>
-          <a href="#" className="inline-flex items-center gap-2 font-display text-xs font-bold uppercase tracking-widest text-primary">
-            All tees <ArrowRight className="size-4" />
-          </a>
+          <Link
+            to="/wardrobe"
+            className="inline-flex items-center gap-2 font-display text-xs font-bold uppercase tracking-widest text-primary hover:underline"
+          >
+            View All <ArrowRight className="size-4" />
+          </Link>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {PRODUCTS.map((p) => (
-            <Link key={p.slug} to="/product/$slug" params={{ slug: p.slug }} className="group block overflow-hidden border border-border bg-card">
-              <div className="aspect-[4/5] overflow-hidden">
-                <img
-                  src={PRODUCT_IMAGE}
-                  alt={`${p.name} product`}
-                  loading="lazy"
-                  width={1536}
-                  height={864}
-                  className="h-full w-[400%] max-w-none object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                  style={{ transform: `translateX(-${p.imageIndex * 25}%)` }}
-                />
-              </div>
-              <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-t border-border p-4">
-                <div className="min-w-0">
-                  <h3 className="truncate text-xs">{p.name}</h3>
-                  <p className="mt-1 text-xs">{p.price}</p>
-                </div>
-                <ShoppingBag className="size-4 shrink-0" />
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* BENEFITS STRIP */}
-      <section className="section-shell grid gap-px border-b border-border bg-border py-px sm:grid-cols-2 lg:grid-cols-4">
-        {benefits.map(([Icon, title, copy]) => (
-          <div key={title} className="flex items-center gap-4 bg-background px-5 py-8">
-            <Icon className="size-7 text-primary" />
-            <div><b className="font-display text-sm">{title}</b><p className="mt-1 text-[10px] text-muted-foreground">{copy}</p></div>
-          </div>
-        ))}
+        <WardrobeCarousel />
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="section-shell py-20">
-        <h2 className="section-title mb-2 text-center">Loved by <span className="text-primary">gift-givers</span></h2>
-        <p className="mb-9 text-center font-serif-italic text-lg text-gold">Real stories from real celebrations.</p>
-        <div className="grid gap-4 md:grid-cols-3">
-          {[
-            ["Ordered the Luxury hamper for our anniversary. She actually cried. Packaging was on another level.", "Rohit M."],
-            ["The Midnight Romance box was perfect for our proposal night. Every detail felt premium.", "Aryan S."],
-            ["Sent the Signature box to my brother on rakhi. He called me the moment he opened it. Worth every rupee.", "Karan D."],
-          ].map(([quote, name]) => (
-            <blockquote key={name} className="border border-border bg-card p-6">
-              <div className="mb-4 tracking-widest text-primary">★★★★★</div>
-              <p className="min-h-14 text-xs leading-6 text-muted-foreground">{quote}</p>
-              <footer className="mt-6 text-xs">— {name}</footer>
-            </blockquote>
-          ))}
+      <section className="border-b border-border py-20">
+        <div className="section-shell">
+          {/* Header */}
+          <div className="mb-12 text-center">
+            <p className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-primary">
+              Real people · Real gifts
+            </p>
+            <h2 className="mt-2 font-display text-4xl font-black uppercase leading-none sm:text-5xl">
+              Loved by <span className="text-primary">gift-givers</span>
+            </h2>
+            <p className="mt-3 font-serif-italic text-base text-gold">Real stories from real celebrations.</p>
+            <div className="mx-auto mt-5 h-px w-12 bg-gold" />
+          </div>
+
+          {/* Cards */}
+          <div className="grid gap-px bg-border md:grid-cols-3">
+            {[
+              {
+                quote: "Ordered the Luxury hamper for our anniversary. She actually cried. The packaging was on another level.",
+                name: "Rohit M.",
+                occasion: "Anniversary",
+              },
+              {
+                quote: "The Midnight Romance box was perfect for our proposal night. Every single detail felt premium.",
+                name: "Aryan S.",
+                occasion: "Proposal",
+              },
+              {
+                quote: "Sent the Signature box to my brother on rakhi. He called me the moment he opened it. Worth every rupee.",
+                name: "Karan D.",
+                occasion: "Rakhi",
+              },
+            ].map(({ quote, name, occasion }) => (
+              <blockquote key={name} className="flex flex-col bg-card px-7 py-8">
+                {/* Big quote mark */}
+                <span className="font-serif-italic text-5xl leading-none text-primary/40 select-none">"</span>
+                <p className="mt-3 flex-1 text-sm leading-7 text-foreground/80">{quote}</p>
+                <footer className="mt-8 flex items-center justify-between border-t border-border pt-5">
+                  <div>
+                    <p className="font-display text-sm font-bold uppercase tracking-wide">{name}</p>
+                    <p className="mt-0.5 font-display text-[10px] uppercase tracking-widest text-primary">{occasion}</p>
+                  </div>
+                  <span className="text-lg tracking-widest text-gold">★★★★★</span>
+                </footer>
+              </blockquote>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* JOIN */}
-      <section id="join" className="relative overflow-hidden border-y border-border bg-hero-gift">
-        <div className="section-shell relative z-10 grid min-h-[360px] items-center py-16 md:grid-cols-2">
-          <div className="md:col-start-2">
-            <p className="font-serif-italic text-lg text-gold">Be the first to know.</p>
-            <h2 className="section-title mt-1">Join the VYROX <span className="text-primary">gift club</span></h2>
-            <p className="mt-3 text-sm text-muted-foreground">Early access to new hampers, seasonal drops and members-only prices.</p>
-            <form className="mt-7 flex max-w-xl flex-col gap-2 sm:flex-row" onSubmit={(e) => e.preventDefault()}>
-              <label className="sr-only" htmlFor="email">Email address</label>
-              <input id="email" type="email" placeholder="Enter your email" className="h-12 min-w-0 flex-1 border border-border bg-background/80 px-4 text-xs outline-none focus:border-primary" />
-              <Button type="submit" className="h-12 px-8">Join Now</Button>
-            </form>
+      <section id="join" className="relative overflow-hidden border-y border-border bg-background">
+        <div className="section-shell py-20">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="font-serif-italic text-base text-gold">Connect with us.</p>
+            <h2 className="mt-2 font-display text-4xl font-black uppercase leading-tight tracking-tight sm:text-5xl">
+              Join the VYROX <span className="text-primary">culture</span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground">
+              Follow our journey, explore new drops, and join the community for exclusive updates.
+            </p>
+
+            {/* Simple divider */}
+            <div className="mx-auto my-10 h-px w-16 bg-border" />
+
+            {/* Contact Info - Minimal Layout */}
+            <div className="mx-auto flex max-w-2xl flex-col items-center justify-center gap-8 sm:flex-row sm:gap-16">
+              {/* Location */}
+              <div>
+                <p className="font-display text-xs font-bold uppercase tracking-widest text-primary">Location</p>
+                <p className="mt-2 text-base font-medium">Trivandrum, India</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">Pan India Shipping</p>
+              </div>
+
+              {/* Divider for desktop */}
+              <div className="hidden h-12 w-px bg-border sm:block" />
+
+              {/* Phone */}
+              <div>
+                <p className="font-display text-xs font-bold uppercase tracking-widest text-primary">Phone</p>
+                <a 
+                  href="tel:+918848303003" 
+                  className="mt-2 block text-base font-medium transition hover:text-primary"
+                >
+                  +91 884 830 3003
+                </a>
+                <p className="mt-0.5 text-xs text-muted-foreground">Available 9 AM - 9 PM</p>
+              </div>
+            </div>
+
+            {/* Instagram Button */}
+            <div className="mt-12">
+              <a
+                href="https://www.instagram.com/vyrox990?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-12 items-center gap-2 bg-primary px-8 font-display text-xs font-bold uppercase tracking-widest text-primary-foreground transition hover:scale-[1.02]"
+              >
+                <Instagram className="size-4" /> Follow @vyrox990
+              </a>
+              
+            </div>
           </div>
         </div>
       </section>

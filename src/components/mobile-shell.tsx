@@ -1,32 +1,36 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Gift, Heart, Home, Menu, Search, ShoppingBag, Sparkles, User, X } from "lucide-react";
+import { Gift, Home, Menu, Search, ShoppingBag, ShoppingCart, Shirt, X } from "lucide-react";
 import { useCart } from "../lib/cart";
 
-const MENU = [
-  ["Home", "/"],
-  ["Hampers", "/hampers"],
-  ["Occasions", "/#occasions"],
-  ["How it works", "/#how"],
-  ["Wardrobe", "/#wardrobe"],
-  ["Track Order", "/#join"],
-  ["Contact", "/#join"],
-] as const;
+// Hamburger drawer menu items
+const MENU: { label: string; to?: string; href?: string }[] = [
+  { label: "Home",         to: "/"        },
+  { label: "Hampers",      to: "/hampers" },
+  { label: "How it works", href: "/#how" },
+  { label: "Wardrobe",     to: "/wardrobe" },
+  { label: "Contact",      href: "/#join" },
+];
 
 export function MobileHeader() {
   const [open, setOpen] = useState(false);
   const { count } = useCart();
+
   return (
     <>
       <header className="sticky top-0 z-50 flex h-14 items-center justify-between border-b border-border bg-background/95 px-4 backdrop-blur md:hidden">
-        <button aria-label="Open menu" onClick={() => setOpen(true)} className="p-2 -ml-2">
+        <button aria-label="Open menu" onClick={() => setOpen(true)} className="-ml-2 p-2">
           <Menu className="size-5" />
         </button>
+
         <Link to="/" className="font-logo text-lg tracking-[0.3em] text-primary">
           VYROX<span className="text-foreground">╱</span>
         </Link>
+
         <div className="flex items-center gap-1">
-          <button aria-label="Search" className="p-2"><Search className="size-5" /></button>
+          <button aria-label="Search" className="p-2">
+            <Search className="size-5" />
+          </button>
           <Link to="/checkout" aria-label="Cart" className="relative p-2">
             <ShoppingBag className="size-5" />
             {count > 0 && (
@@ -38,24 +42,38 @@ export function MobileHeader() {
         </div>
       </header>
 
+      {/* Slide-out hamburger drawer */}
       {open && (
         <div className="fixed inset-0 z-[100] md:hidden" role="dialog" aria-modal="true">
           <div className="absolute inset-0 bg-black/70" onClick={() => setOpen(false)} />
-          <aside className="absolute left-0 top-0 flex h-full w-[82vw] max-w-sm flex-col border-r border-border bg-background p-6 animate-[slide-in-right_0.25s_ease-out]">
+          <aside className="absolute left-0 top-0 flex h-full w-[82vw] max-w-sm flex-col border-r border-border bg-background p-6">
             <div className="flex items-center justify-between">
               <span className="font-logo text-xl tracking-[0.3em] text-primary">VYROX╱</span>
-              <button aria-label="Close menu" onClick={() => setOpen(false)} className="p-2"><X className="size-5"/></button>
+              <button aria-label="Close menu" onClick={() => setOpen(false)} className="p-2">
+                <X className="size-5" />
+              </button>
             </div>
             <nav className="mt-8 flex flex-col gap-1">
-              {MENU.map(([label, href]) => (
-                <a
-                  key={label}
-                  href={href}
-                  onClick={() => setOpen(false)}
-                  className="border-b border-border py-4 font-display text-lg font-bold uppercase tracking-wide hover:text-primary"
-                >
-                  {label}
-                </a>
+              {MENU.map(({ label, to, href }) => (
+                to ? (
+                  <Link
+                    key={label}
+                    to={to}
+                    onClick={() => setOpen(false)}
+                    className="border-b border-border py-4 font-display text-lg font-bold uppercase tracking-wide hover:text-primary"
+                  >
+                    {label}
+                  </Link>
+                ) : (
+                  <a
+                    key={label}
+                    href={href}
+                    onClick={() => setOpen(false)}
+                    className="border-b border-border py-4 font-display text-lg font-bold uppercase tracking-wide hover:text-primary"
+                  >
+                    {label}
+                  </a>
+                )
               ))}
             </nav>
             <p className="mt-auto pt-8 text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -68,30 +86,59 @@ export function MobileHeader() {
   );
 }
 
-const TABS = [
-  { label: "Home", icon: Home, href: "/" },
-  { label: "Hampers", icon: Gift, href: "/hampers" },
-  { label: "Occasions", icon: Sparkles, href: "/#occasions" },
-  { label: "Wishlist", icon: Heart, href: "/#join" },
-  { label: "Account", icon: User, href: "/#join" },
-];
-
+// Bottom nav — uses TanStack <Link> for client-side navigation (no full reloads)
+// Wardrobe uses a plain <a> with hash because TanStack Link doesn't support
+// navigating to a hash section on a different page in the same call.
 export function MobileBottomNav() {
+  const { count } = useCart();
+
   return (
     <nav
-      className="fixed inset-x-0 bottom-0 z-50 grid grid-cols-5 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
-      aria-label="Primary"
+      className="fixed inset-x-0 bottom-0 z-50 grid grid-cols-4 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+      aria-label="Primary navigation"
     >
-      {TABS.map(({ label, icon: Icon, href }) => (
-        <a
-          key={label}
-          href={href}
-          className="flex flex-col items-center justify-center gap-1 py-2 text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary"
-        >
-          <Icon className="size-5" />
-          {label}
-        </a>
-      ))}
+      {/* Home */}
+      <Link
+        to="/"
+        className="flex flex-col items-center justify-center gap-1 py-2 text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary"
+      >
+        <Home className="size-5" />
+        Home
+      </Link>
+
+      {/* Hampers */}
+      <Link
+        to="/hampers"
+        className="flex flex-col items-center justify-center gap-1 py-2 text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary"
+      >
+        <Gift className="size-5" />
+        Hampers
+      </Link>
+
+      {/* Wardrobe — now goes to dedicated page */}
+      <Link
+        to="/wardrobe"
+        className="flex flex-col items-center justify-center gap-1 py-2 text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary"
+      >
+        <Shirt className="size-5" />
+        Wardrobe
+      </Link>
+
+      {/* Cart */}
+      <Link
+        to="/checkout"
+        className="relative flex flex-col items-center justify-center gap-1 py-2 text-[9px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary"
+      >
+        <span className="relative">
+          <ShoppingCart className="size-5" />
+          {count > 0 && (
+            <span className="absolute -right-1.5 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 font-display text-[9px] font-bold text-primary-foreground">
+              {count}
+            </span>
+          )}
+        </span>
+        Cart
+      </Link>
     </nav>
   );
 }
@@ -101,7 +148,7 @@ export function MobileChrome() {
     <>
       <MobileHeader />
       <MobileBottomNav />
-      {/* spacer so bottom nav doesn't cover content */}
+      {/* Spacer so bottom nav doesn't overlap content */}
       <div className="h-16 md:hidden" aria-hidden />
     </>
   );

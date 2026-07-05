@@ -177,6 +177,8 @@
   .gold-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--color-gold), transparent); }
   .bg-hero-gift { background: radial-gradient(circle at 50% 45%, oklch(0.25 0.09 25 / .6), transparent 55%), radial-gradient(circle at 20% 80%, oklch(0.22 0.05 60 / .35), transparent 40%), linear-gradient(140deg, oklch(0.08 0.005 20), oklch(0.12 0.02 25) 55%, oklch(0.06 0.003 20)); }
   .bg-cream-section { background: color-mix(in oklab, var(--color-cream) 96%, transparent); color: oklch(0.2 0.01 30); }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 @media (max-width: 639px) {

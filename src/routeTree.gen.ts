@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WardrobeRouteImport } from './routes/wardrobe'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as HampersRouteImport } from './routes/hampers'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -16,6 +17,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as HamperSlugRouteImport } from './routes/hamper.$slug'
 
+const WardrobeRoute = WardrobeRouteImport.update({
+  id: '/wardrobe',
+  path: '/wardrobe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/hampers': typeof HampersRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/wardrobe': typeof WardrobeRoute
   '/hamper/$slug': typeof HamperSlugRoute
   '/product/$slug': typeof ProductSlugRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/hampers': typeof HampersRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/wardrobe': typeof WardrobeRoute
   '/hamper/$slug': typeof HamperSlugRoute
   '/product/$slug': typeof ProductSlugRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/hampers': typeof HampersRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/wardrobe': typeof WardrobeRoute
   '/hamper/$slug': typeof HamperSlugRoute
   '/product/$slug': typeof ProductSlugRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/hampers'
     | '/sitemap.xml'
+    | '/wardrobe'
     | '/hamper/$slug'
     | '/product/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/hampers'
     | '/sitemap.xml'
+    | '/wardrobe'
     | '/hamper/$slug'
     | '/product/$slug'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/hampers'
     | '/sitemap.xml'
+    | '/wardrobe'
     | '/hamper/$slug'
     | '/product/$slug'
   fileRoutesById: FileRoutesById
@@ -104,12 +116,20 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   HampersRoute: typeof HampersRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  WardrobeRoute: typeof WardrobeRoute
   HamperSlugRoute: typeof HamperSlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wardrobe': {
+      id: '/wardrobe'
+      path: '/wardrobe'
+      fullPath: '/wardrobe'
+      preLoaderRoute: typeof WardrobeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -160,9 +180,20 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   HampersRoute: HampersRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  WardrobeRoute: WardrobeRoute,
   HamperSlugRoute: HamperSlugRoute,
   ProductSlugRoute: ProductSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
