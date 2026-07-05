@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { MessageCircle, Sparkles, X } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { MessageCircle, Sparkles, X, GripVertical } from "lucide-react";
 import { Button } from "./ui/button";
 
 const WHATSAPP = "919322520620";
@@ -40,12 +40,65 @@ export function CustomizeWidget() {
   const [sent, setSent]     = useState(false);
   const [form, setForm]     = useState<Form>({ name: "", phone: "", occasion: "", budget: "", details: "" });
   const [errors, setErrors] = useState<Errors>({});
+  
+  // Draggable button state
+  const [position, setPosition] = useState({ x: 16, y: 96 }); // Default: right: 16px, bottom: 96px (24px * 4)
+  const [isDragging, setIsDragging] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const dragStart = useRef({ x: 0, y: 0 });
 
   const set = (field: keyof Form) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
       setForm(p => ({ ...p, [field]: e.target.value }));
       if (errors[field]) setErrors(p => ({ ...p, [field]: undefined }));
     };
+
+  // Handle drag events
+  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+    
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    
+    dragStart.current = { x: clientX, y: clientY };
+  };
+
+  useEffect(() => {
+    const handleMove = (e: MouseEvent | TouchEvent) => {
+      if (!isDragging || !buttonRef.current) return;
+
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+      const deltaX = dragStart.current.x - clientX;
+      const deltaY = clientY - dragStart.current.y;
+
+      const newX = Math.max(8, Math.min(window.innerWidth - buttonRef.current.offsetWidth - 8, position.x + deltaX));
+      const newY = Math.max(8, Math.min(window.innerHeight - buttonRef.current.offsetHeight - 8, position.y + deltaY));
+
+      setPosition({ x: newX, y: newY });
+      dragStart.current = { x: clientX, y: clientY };
+    };
+
+    const handleEnd = () => {
+      setIsDragging(false);
+    };
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMove);
+      document.addEventListener('mouseup', handleEnd);
+      document.addEventListener('touchmove', handleMove);
+      document.addEventListener('touchend', handleEnd);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMove);
+      document.removeEventListener('mouseup', handleEnd);
+      document.removeEventListener('touchmove', handleMove);
+      document.removeEventListener('touchend', handleEnd);
+    };
+  }, [isDragging, position]);
 
   const submit = () => {
     const errs = validate(form);
@@ -65,12 +118,25 @@ export function CustomizeWidget() {
 
   return (
     <>
-      {/* Floating trigger button */}
+      {/* Floating draggable trigger button */}
       <button
-        onClick={() => setOpen(true)}
+        ref={buttonRef}
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleMouseDown}
+        onClick={(e) => {
+          // Only open if not dragging (small movements allowed)
+          if (!isDragging) setOpen(true);
+        }}
         aria-label="Customize a hamper"
-        className="fixed bottom-24 right-4 z-50 flex items-center gap-2 border border-gold/40 bg-card px-4 py-2.5 shadow-lg backdrop-blur transition-transform hover:scale-105 active:scale-95 md:bottom-6 md:right-6"
+        style={{
+          right: `${position.x}px`,
+          bottom: `${position.y}px`,
+          cursor: isDragging ? 'grabbing' : 'grab',
+          touchAction: 'none',
+        }}
+        className="fixed z-50 flex items-center gap-2 border border-gold/40 bg-card px-4 py-2.5 shadow-lg backdrop-blur transition-transform hover:scale-105 active:scale-95 select-none"
       >
+        <GripVertical className="size-3 text-muted-foreground/50" />
         <Sparkles className="size-4 text-gold" />
         <span className="font-display text-[10px] font-bold uppercase tracking-widest text-foreground">
           Customize
