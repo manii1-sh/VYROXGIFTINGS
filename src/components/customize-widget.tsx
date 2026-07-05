@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { MessageCircle, Sparkles, X, GripVertical } from "lucide-react";
 import { Button } from "./ui/button";
 
-const WHATSAPP = "919322520620";
+const WHATSAPP = "918848303003";
 
 const OCCASIONS = ["Anniversary", "Valentine", "Birthday", "Rakhi", "Wedding", "Corporate", "Other"];
 const BUDGETS = ["₹500 – ₹1,000", "₹1,000 – ₹2,000", "₹2,000 – ₹3,500", "₹3,500+", "Not sure yet"];
