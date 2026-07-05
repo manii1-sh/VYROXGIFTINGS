@@ -16,7 +16,7 @@ export const Route = createFileRoute("/hampers")({
   component: HampersPage,
 });
 
-const CATEGORY_FILTERS: Array<"All" | HamperCategory> = ["All", "For Her", "For Him", "Festive Special"];
+const CATEGORY_FILTERS: Array<"All" | HamperCategory> = ["All", "For Female", "For Male", "Festive Special"];
 
 function HampersPage() {
   const [categoryFilter, setCategoryFilter] = useState<"All" | HamperCategory>("All");

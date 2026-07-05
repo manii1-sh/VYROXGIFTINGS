@@ -19,7 +19,7 @@ import onamMaleHamper4 from "../assets/onammalehamper4.jpeg";
 import onamFemaleHamper1 from "../assets/onamfemalehamper1.jpeg";
 import onamFemaleHamper2 from "../assets/onamfemalehamper2.jpeg";
 
-export type HamperCategory = "For Her" | "For Him" | "Festive Special";
+export type HamperCategory = "For Female" | "For Male" | "Festive Special";
 
 export type Hamper = {
   slug: string;
@@ -39,7 +39,7 @@ export type Hamper = {
 };
 
 export const HAMPERS: Hamper[] = [
-  // FOR HIM
+  // FOR MALE
   {
     slug: "signature-1000",
     name: "Signature Gift Hamper",
@@ -50,7 +50,7 @@ export const HAMPERS: Hamper[] = [
       "The perfect gift for your loved ones — a premium VYROX shirt, romantic roses, luxury perfume, sweet treats and a heartfelt greeting card, all hand-packed in a keepsake box.",
     occasion: ["Anniversary", "Valentine", "Birthday"],
     audience: "Him",
-    category: "For Him",
+    category: "For Male",
     contents: [
       "Premium VYROX Shirt",
       "Romantic Roses Bouquet",
@@ -73,7 +73,7 @@ export const HAMPERS: Hamper[] = [
       "Our most-loved luxury box. A Bellavita 4-piece perfume collection, a matte black wristwatch, a glowing LOVE snow globe, heart-shaped Ferrero, artisan chocolates and a VYROX premium tee.",
     occasion: ["Anniversary", "Valentine", "Wedding"],
     audience: "Him",
-    category: "For Him",
+    category: "For Male",
     contents: [
       "Bellavita Luxury Perfume 4-Set",
       "Matte Black Wristwatch",
@@ -97,7 +97,7 @@ export const HAMPERS: Hamper[] = [
       "A moody, romantic box built for a night to remember. Premium VYROX shirt, Bellavita Blush, pink roses, a keepsake panda, wafer rolls and KitKat — presented on rich crimson velvet.",
     occasion: ["Valentine", "Anniversary", "Proposal"],
     audience: "Him",
-    category: "For Him",
+    category: "For Male",
     contents: [
       "VYROX Premium Black Shirt",
       "Bellavita Blush Eau de Parfum",
@@ -112,15 +112,15 @@ export const HAMPERS: Hamper[] = [
     tone: "dark",
   },
   {
-    slug: "corporate-prestige-1800",
-    name: "Corporate Prestige Hamper",
+    slug: "executive-prestige-1800",
+    name: "Executive Gift Hamper",
     price: 3500,
     priceLabel: "₹3,500",
     tagline: "Excellence in every box.",
-    description: "A sophisticated, premium gift box curated for professionals and corporate partners. Features a matte black thermos, premium leather journal, signature brass pen, dark roast coffee brew bags, and gourmet almond brittle.",
+    description: "A sophisticated, premium gift box curated for professionals. Features a matte black thermos, premium leather journal, signature brass pen, dark roast coffee brew bags, and gourmet almond brittle.",
     occasion: ["Birthday"],
     audience: "Him",
-    category: "For Him",
+    category: "For Male",
     contents: [
       "Matte Black Thermos Bottle",
       "Premium Saffiano Leather Journal",
@@ -134,7 +134,7 @@ export const HAMPERS: Hamper[] = [
     tone: "dark"
   },
 
-  // FOR HER
+  // FOR FEMALE
   {
     slug: "elegance-for-her-1200",
     name: "Elegance For Her",
@@ -145,7 +145,7 @@ export const HAMPERS: Hamper[] = [
       "A luxurious gift box designed for the special woman in your life. Features premium perfume, romantic roses, gourmet chocolates, and elegant accessories.",
     occasion: ["Birthday", "Anniversary", "Valentine"],
     audience: "Her",
-    category: "For Her",
+    category: "For Female",
     contents: [
       "Bellavita Premium Perfume",
       "Fresh Rose Bouquet",
@@ -167,7 +167,7 @@ export const HAMPERS: Hamper[] = [
       "Express your love with this beautifully curated hamper featuring premium beauty products, romantic roses, and sweet treats.",
     occasion: ["Valentine", "Anniversary"],
     audience: "Her",
-    category: "For Her",
+    category: "For Female",
     contents: [
       "Luxury Beauty Set",
       "Pink & Red Roses",
@@ -189,7 +189,7 @@ export const HAMPERS: Hamper[] = [
       "An exquisite collection of premium items that speak elegance and grace. Perfect for making any occasion memorable.",
     occasion: ["Birthday", "Wedding", "Anniversary"],
     audience: "Her",
-    category: "For Her",
+    category: "For Female",
     contents: [
       "Premium Perfume Trio",
       "Designer Rose Arrangement",
@@ -211,7 +211,7 @@ export const HAMPERS: Hamper[] = [
       "Our finest collection for her, featuring premium beauty products, exclusive perfumes, and handpicked gourmet treats.",
     occasion: ["Anniversary", "Proposal", "Birthday"],
     audience: "Her",
-    category: "For Her",
+    category: "For Female",
     contents: [
       "Bellavita Premium Collection",
       "Luxury Rose Box",
