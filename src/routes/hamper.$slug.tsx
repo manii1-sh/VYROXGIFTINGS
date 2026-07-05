@@ -1,7 +1,6 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import {
-  Check,
   ChevronLeft,
   Minus,
   PackageCheck,
@@ -170,20 +169,7 @@ function HamperPage() {
               </span>
             </div>
 
-            {/* What's inside — clean numbered list, not chips */}
-            <div className="mt-5 border-b border-border pb-5">
-              <p className="mb-3 font-display text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground">
-                What's inside
-              </p>
-              <ul className="grid grid-cols-2 gap-y-2 gap-x-4">
-                {hamper.contents.map((c) => (
-                  <li key={c} className="flex items-center gap-2 text-xs text-foreground/80">
-                    <Check className="size-3.5 shrink-0 text-primary" />
-                    {c}
-                  </li>
-                ))}
-              </ul>
-            </div>
+
 
             {/* Personalize */}
             <div className="mt-5 border-b border-border pb-5">
@@ -410,17 +396,7 @@ function HamperPage() {
             )}
           </div>
 
-          {/* What's inside */}
-          <div>
-            <p className="mb-2 font-display text-[10px] font-bold uppercase tracking-widest text-muted-foreground">What's inside</p>
-            <ul className="grid grid-cols-2 gap-y-1.5 gap-x-3">
-              {hamper.contents.map((c) => (
-                <li key={c} className="flex items-center gap-1.5 text-xs text-foreground/80">
-                  <Check className="size-3 shrink-0 text-primary" /> {c}
-                </li>
-              ))}
-            </ul>
-          </div>
+
 
           {/* Personalize */}
           <div className="space-y-2 border-t border-border pt-4">
