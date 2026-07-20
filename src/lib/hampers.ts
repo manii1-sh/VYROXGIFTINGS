@@ -19,6 +19,16 @@ import onamMaleHamper4 from "../assets/onammalehamper4.jpeg";
 import onamFemaleHamper1 from "../assets/onamfemalehamper1.jpeg";
 import onamFemaleHamper2 from "../assets/onamfemalehamper2.jpeg";
 
+// Additional new hampers
+import newHamper1 from "../assets/new1.webp";
+import newHamper2 from "../assets/new1 (1).webp";
+import newHamper3 from "../assets/new1 (3).webp";
+import newHamper4 from "../assets/new1 (4).webp";
+import newHamper5 from "../assets/new1 (5).webp";
+import newHamper6 from "../assets/new1 (6).webp";
+import newHamper7 from "../assets/new1 (7).webp";
+import newHamper8 from "../assets/new1 (8).webp";
+
 export type HamperCategory = "For Female" | "For Male" | "Festive Special";
 
 export type Hamper = {
@@ -352,6 +362,184 @@ export const HAMPERS: Hamper[] = [
       "Premium Packaging",
     ],
     image: onamFemaleHamper2,
+    includesApparel: false,
+    tone: "dark",
+  },
+
+  // NEW COLLECTION
+  {
+    slug: "premium-delight-5000",
+    name: "Premium Delight Hamper",
+    price: 5000,
+    priceLabel: "₹5,000",
+    tagline: "Luxury redefined.",
+    description:
+      "Our most premium collection featuring exclusive items, gourmet treats, and luxury accessories. Perfect for those special moments.",
+    occasion: ["Anniversary", "Wedding", "Birthday"],
+    audience: "Couple",
+    category: "For Male",
+    contents: [
+      "Premium Gift Set",
+      "Luxury Perfume Collection",
+      "Gourmet Chocolates & Treats",
+      "Exclusive Accessories",
+      "Handcrafted Gift Card",
+      "Premium Gift Wrapping",
+    ],
+    image: newHamper1,
+    includesApparel: false,
+    tone: "light",
+  },
+  {
+    slug: "celebration-special-1500",
+    name: "Celebration Special",
+    price: 1500,
+    priceLabel: "₹1,500",
+    tagline: "Celebrate every moment.",
+    description:
+      "A delightful hamper perfect for celebrations. Includes premium sweets, chocolates, and festive items.",
+    occasion: ["Birthday", "Anniversary"],
+    audience: "Couple",
+    category: "For Male",
+    contents: [
+      "Premium Sweets Box",
+      "Chocolate Collection",
+      "Festive Treats",
+      "Greeting Card",
+      "Gift Wrap",
+    ],
+    image: newHamper2,
+    includesApparel: false,
+    tone: "light",
+  },
+  {
+    slug: "classic-gift-1000",
+    name: "Classic Gift Hamper",
+    price: 1000,
+    priceLabel: "₹1,000",
+    tagline: "Simple. Classic. Perfect.",
+    description:
+      "A classic gift hamper featuring essential items and sweet treats. Perfect for any occasion.",
+    occasion: ["Birthday", "Valentine"],
+    audience: "Him",
+    category: "For Male",
+    contents: [
+      "Chocolate Assortment",
+      "Gourmet Snacks",
+      "Gift Card",
+      "Premium Wrapping",
+    ],
+    image: newHamper3,
+    includesApparel: false,
+    tone: "light",
+  },
+  {
+    slug: "grand-celebration-2000",
+    name: "Grand Celebration Hamper",
+    price: 2000,
+    priceLabel: "₹2,000",
+    tagline: "Make it grand.",
+    description:
+      "A grand collection of premium items perfect for major celebrations. Features luxury products and gourmet treats.",
+    occasion: ["Wedding", "Anniversary"],
+    audience: "Couple",
+    category: "For Male",
+    contents: [
+      "Luxury Gift Collection",
+      "Premium Chocolates",
+      "Festive Items",
+      "Decorative Accessories",
+      "Special Card",
+    ],
+    image: newHamper4,
+    includesApparel: false,
+    tone: "dark",
+  },
+  {
+    slug: "festive-joy-1500",
+    name: "Festive Joy Hamper",
+    price: 1500,
+    priceLabel: "₹1,500",
+    tagline: "Spread the joy.",
+    description:
+      "Bring festive joy with this beautiful hamper featuring traditional sweets, chocolates, and celebration items.",
+    occasion: ["Festival", "Birthday"],
+    audience: "Couple",
+    category: "Festive Special",
+    contents: [
+      "Traditional Sweets",
+      "Chocolate Selection",
+      "Festive Decor",
+      "Gift Card",
+      "Premium Packaging",
+    ],
+    image: newHamper5,
+    includesApparel: false,
+    tone: "light",
+  },
+  {
+    slug: "elegant-wishes-1500",
+    name: "Elegant Wishes",
+    price: 1500,
+    priceLabel: "₹1,500",
+    tagline: "Elegant. Thoughtful. Beautiful.",
+    description:
+      "Express your wishes elegantly with this curated collection of premium items and sweet treats.",
+    occasion: ["Birthday", "Anniversary"],
+    audience: "Her",
+    category: "For Female",
+    contents: [
+      "Premium Gift Items",
+      "Luxury Chocolates",
+      "Beautiful Roses",
+      "Elegant Card",
+      "Gift Wrapping",
+    ],
+    image: newHamper6,
+    includesApparel: false,
+    tone: "light",
+  },
+  {
+    slug: "sweet-moments-1000",
+    name: "Sweet Moments",
+    price: 1000,
+    priceLabel: "₹1,000",
+    tagline: "Create sweet memories.",
+    description:
+      "A sweet collection perfect for creating memorable moments. Features chocolates, treats, and lovely gifts.",
+    occasion: ["Valentine", "Birthday"],
+    audience: "Her",
+    category: "For Female",
+    contents: [
+      "Chocolate Box",
+      "Sweet Treats",
+      "Gift Items",
+      "Love Card",
+      "Beautiful Wrapping",
+    ],
+    image: newHamper7,
+    includesApparel: false,
+    tone: "light",
+  },
+  {
+    slug: "premium-celebration-2500",
+    name: "Premium Celebration",
+    price: 2500,
+    priceLabel: "₹2,500",
+    tagline: "Celebrate in style.",
+    description:
+      "Our premium celebration hamper with luxury items, gourmet treats, and exclusive accessories for grand occasions.",
+    occasion: ["Anniversary", "Wedding", "Birthday"],
+    audience: "Couple",
+    category: "For Male",
+    contents: [
+      "Premium Luxury Items",
+      "Gourmet Chocolate Collection",
+      "Exclusive Gifts",
+      "Decorative Elements",
+      "Premium Card & Wrap",
+    ],
+    image: newHamper8,
     includesApparel: false,
     tone: "dark",
   },
